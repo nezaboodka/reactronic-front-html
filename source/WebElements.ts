@@ -1,7 +1,7 @@
 // The below copyright notice and the license permission notice
 // shall be included in all copies or substantial portions.
 // Copyright (C) 2019-2020 Yury Chetyrko <ychetyrko@gmail.com>
-// License: https://raw.githubusercontent.com/nezaboodka-front-web/reactronic/master/LICENSE
+// MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
 import { Render, Token, emit, RenderWithParent, Customize } from 'reactronic-front'
 import { WebRtti } from './WebRtti'
