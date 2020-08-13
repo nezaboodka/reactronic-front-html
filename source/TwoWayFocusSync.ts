@@ -3,7 +3,7 @@
 // Copyright (C) 2019-2020 Yury Chetyrko <ychetyrko@gmail.com>
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
-import { Trigger, ToggleRef } from 'reactronic-front'
+import { Trigger, ToggleRef, Ref } from 'reactronic-front'
 
 export function TwoWayFocusSync(
   id: string,
@@ -15,7 +15,10 @@ export function TwoWayFocusSync(
   if (setNativeFocus === undefined)
     setNativeFocus = () => target.focus()
   Trigger(id, { focusToggleRef }, (e, o, state) => {
-    const active = state.focusToggleRef.value === state.focusToggleRef.value1
+    const v = state.focusToggleRef.value
+    const v1 = state.focusToggleRef.value1
+    const active = v === state.focusToggleRef.value1 || (
+      v instanceof Ref && v1 instanceof Ref && Ref.sameRefs(v, v1))
     // console.log(`${(entity as any).constructor.name}.${member.toString()} === ${entity[member]} => ${member}:${activeValue}.setFocused(${active}) // ${Reactronic.why()}`)
     active && setNativeFocus && setNativeFocus()
   })
