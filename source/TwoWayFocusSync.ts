@@ -3,7 +3,8 @@
 // Copyright (C) 2019-2020 Yury Chetyrko <ychetyrko@gmail.com>
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
-import { Trigger, ToggleRef, Ref } from 'reactronic-front'
+import { ToggleRef, Ref } from 'reactronic'
+import { Trigger } from 'reactronic-front'
 
 export function TwoWayFocusSync(
   id: string,
