@@ -2253,17 +2253,17 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-reactronic-front@^0.20.25:
-  version "0.20.25"
-  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.25.tgz#0230ccfc3ed3e6d7782fb6dc2036204708520f5c"
-  integrity sha512-xe3Ub8d4H4quVe7LsGENMYBUPEo2LK0ySJ6JKyd0RDdOiKFsPT9ZHi/HGC02vj907n8DnhdBMxiCrUfb03dqig==
+reactronic-front@^0.20.26:
+  version "0.20.26"
+  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.26.tgz#0d70f29638244d5bfe5a87784cbf2c975ad8a8ea"
+  integrity sha512-U+WLkNBi2r3DQchSQtIfg3R6LlLGqpk47vcuJdpsYqHNJasZgLiogaGvBIB60dJnTpqybM1EW4b80oRH4UmNGw==
   dependencies:
-    reactronic "^0.20.100"
+    reactronic "^0.20.101"
 
-reactronic@^0.20.100:
-  version "0.20.100"
-  resolved "https://registry.yarnpkg.com/reactronic/-/reactronic-0.20.100.tgz#169a84425696addd004681c342d851a25d6a8bf9"
-  integrity sha512-NUkt4bOmLSnJnXDjhOdLJB1yDmHVFzlImDqHbWY5twuRMXbVReXewx7FYscsinJlTu9MIUXuxdOyKuY/2pSKlA==
+reactronic@^0.20.101:
+  version "0.20.101"
+  resolved "https://registry.yarnpkg.com/reactronic/-/reactronic-0.20.101.tgz#9a508e1a9ad9fefea462a8f86906c77b6d7f9c47"
+  integrity sha512-mG/aEUYq6HiF6kwknSKaT/GQM1sLsEI3fqmutG+LtAWcsZ/cH8qmrttyz2bSdqDkvuXRkyzRcrLv8LlteFhC2A==
 
 read-pkg@^5.2.0:
   version "5.2.0"
