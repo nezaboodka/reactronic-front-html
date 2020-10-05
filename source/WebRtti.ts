@@ -6,9 +6,6 @@
 import { Reactronic } from 'reactronic'
 import { render, unmount, Token, Rtti } from 'reactronic-front'
 
-// eslint-disable-next-line prefer-const
-export let isDebugAttributeEnabled: boolean = false
-
 export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...args: any[]): T {
   const outer = WebRtti.current
   try {
@@ -20,6 +17,8 @@ export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...a
 }
 
 export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
+  static isDebugAttributeEnabled: boolean = false
+
   constructor(
     readonly name: string,
     readonly sorting: boolean = false) {
@@ -33,7 +32,7 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
       WebRtti.current = e // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
       render(t) // proceed
       WebRtti.blinkingEffect && blink(e, mounted.cycle)
-      if (isDebugAttributeEnabled)
+      if (WebRtti.isDebugAttributeEnabled)
         e.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
     }
     finally {
