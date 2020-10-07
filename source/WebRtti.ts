@@ -4,7 +4,7 @@
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
 import { Reactronic } from 'reactronic'
-import { render, unmount, Token, Rtti } from 'reactronic-front'
+import { render, unmount, Emitted, Rtti } from 'reactronic-front'
 
 export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...args: any[]): T {
   const outer = WebRtti.current
@@ -24,65 +24,65 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
     readonly sorting: boolean = false) {
   }
 
-  render(t: Token<E, any, any>): void {
+  render(e: Emitted<E, any, any>): void {
     const outer = WebRtti.current
     try { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const mounted = t.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const e = mounted.instance!.native!
-      WebRtti.current = e // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
-      render(t) // proceed
-      WebRtti.blinkingEffect && blink(e, mounted.cycle)
+      const mounted = e.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const native = mounted.instance!.native!
+      WebRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
+      render(e) // proceed
+      WebRtti.blinkingEffect && blink(native, mounted.cycle)
       if (WebRtti.isDebugAttributeEnabled)
-        e.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
+        native.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
     }
     finally {
       WebRtti.current = outer
     }
   }
 
-  mount(t: Token<E, any, any>, owner: Token, sibling?: Token): void {
+  mount(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
     const parent = owner.mounted?.instance?.native as HTMLElement ?? WebRtti.current // TODO: To get rid of this workaround
-    const e = document.createElement(t.rtti.name) as E // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    e.id = t.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
+    const native = document.createElement(e.rtti.name) as E // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    native.id = e.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
     if (!owner.rtti.sorting) {
       if (sibling !== undefined) {
         const prev = sibling.mounted?.instance?.native
         if (prev instanceof HTMLElement)
-          parent.insertBefore(e, prev.nextSibling)
+          parent.insertBefore(native, prev.nextSibling)
       }
       else
-        parent.insertBefore(e, parent.firstChild)
+        parent.insertBefore(native, parent.firstChild)
     }
     else
-      parent.appendChild(e)
+      parent.appendChild(native)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    t.mounted!.instance!.native = e
+    e.mounted!.instance!.native = native
   }
 
-  reorder(t: Token<E, any, any>, owner: Token, sibling?: Token): void {
+  reorder(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
     const parent = owner.mounted?.instance?.native as HTMLElement ?? WebRtti.current // TODO: To get rid of this workaround
     const prev = sibling?.mounted?.instance?.native
-    const e = t.mounted?.instance?.native
-    if (e && prev instanceof HTMLElement && prev.nextSibling !== e) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const native = e.mounted?.instance?.native
+    if (native && prev instanceof HTMLElement && prev.nextSibling !== native) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.insertBefore(${(prev.nextSibling! as any)?.id})`)
-      parent.insertBefore(e, prev.nextSibling)
+      parent.insertBefore(native, prev.nextSibling)
     }
   }
 
-  unmount(t: Token<E, any, any>, owner: Token, cause: Token): void {
-    const e = t.mounted?.instance?.native
-    if (!WebRtti.unmounting && e && e.parentElement) {
-      WebRtti.unmounting = e // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  unmount(e: Emitted<E, any, any>, owner: Emitted, cause: Emitted): void {
+    const native = e.mounted?.instance?.native
+    if (!WebRtti.unmounting && native && native.parentElement) {
+      WebRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       try { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${e.parentElement.id}.removeChild(${e.id} r${ref.mounted!.cycle})`)
-        e.remove()
-        unmount(t, owner, cause) // proceed
+        native.remove()
+        unmount(e, owner, cause) // proceed
       }
       finally {
         WebRtti.unmounting = undefined
       }
     }
     else { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}???.unmount(${ref.id} r${ref.mounted!.cycle})`)
-      unmount(t, owner, cause) // proceed
+      unmount(e, owner, cause) // proceed
     }
   }
 

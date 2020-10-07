@@ -4,7 +4,7 @@
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
 import { BoolRef, Ref } from 'reactronic'
-import { Trigger } from 'reactronic-front'
+import { RxFragment } from 'reactronic-front'
 
 export function TwoWayFocusSync(
   id: string,
@@ -15,7 +15,7 @@ export function TwoWayFocusSync(
   target.focusBinding = focusToggleRef
   if (setNativeFocus === undefined)
     setNativeFocus = () => target.focus()
-  Trigger(id, { focusToggleRef }, (e, o, state) => {
+  RxFragment(id, { focusToggleRef }, (e, o, state) => {
     const v = state.focusToggleRef.deref
     const v1 = state.focusToggleRef.value1
     const active = v === state.focusToggleRef.value1 || (
