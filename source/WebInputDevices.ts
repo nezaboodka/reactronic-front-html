@@ -3,7 +3,7 @@
 // Copyright (C) 2019-2020 Yury Chetyrko <ychetyrko@gmail.com>
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
 
-import { transaction, logging, LogLevel, stateless } from 'reactronic'
+import { transaction, trace, LogLevel, stateless } from 'reactronic'
 import * as UI from 'reactronic-front'
 import { SYM_FOCUS_BINDING, SYM_BINDING, SYM_HOVER_BINDING } from './WebApiExt'
 
@@ -61,13 +61,13 @@ export class WebInputDevices extends UI.InputDevices {
     }
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   resetFocus(): void {
     this.trackFocus(this.element?.focusBinding ? [this.element.focusBinding] : [], true)
     this.element?.focus()
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onFocusIn(e: FocusEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -75,7 +75,7 @@ export class WebInputDevices extends UI.InputDevices {
       UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onFocusOut(e: FocusEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -83,7 +83,7 @@ export class WebInputDevices extends UI.InputDevices {
       UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onPointerOver(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -93,7 +93,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onPointerMove(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -102,7 +102,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.pointerId, e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onPointerDown(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -112,7 +112,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onPointerUp(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -122,7 +122,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onDblClick(e: MouseEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -132,7 +132,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onTouchStart(e: Event): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -141,7 +141,7 @@ export class WebInputDevices extends UI.InputDevices {
       UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onTouchEnd(e: Event): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -149,7 +149,7 @@ export class WebInputDevices extends UI.InputDevices {
       UI.grabBindings(path, SYM_BINDING, this.pointer.bindings))
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onWheel(e: WheelEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -159,7 +159,7 @@ export class WebInputDevices extends UI.InputDevices {
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onKeyDown(e: KeyboardEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -167,7 +167,7 @@ export class WebInputDevices extends UI.InputDevices {
       UI.grabBindings(path, SYM_BINDING, this.keyboard.bindings), e.key)
   }
 
-  @transaction @logging(LogLevel.Suppress)
+  @transaction @trace(LogLevel.Suppress)
   onKeyUp(e: KeyboardEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
