@@ -9,16 +9,16 @@ import { Reactronic } from 'reactronic'
 import { render, unmount, Emitted, Rtti } from 'reactronic-front'
 
 export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...args: any[]): T {
-  const outer = WebRtti.current
+  const outer = WebElementRtti.current
   try {
     return func(...args)
   }
   finally {
-    WebRtti.current = outer
+    WebElementRtti.current = outer
   }
 }
 
-export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
+abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
   static isDebugAttributeEnabled: boolean = false
 
   constructor(
@@ -27,29 +27,29 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
   }
 
   render(e: Emitted<E, any, any>): void {
-    const outer = WebRtti.current
+    const outer = WebElementRtti.current
     try { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const mounted = e.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const native = mounted.instance!.native!
-      WebRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
+      WebElementRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
       render(e) // proceed
-      WebRtti.blinkingEffect && blink(native, mounted.cycle)
-      if (WebRtti.isDebugAttributeEnabled)
+      WebElementRtti.blinkingEffect && blink(native, mounted.cycle)
+      if (WebElementRtti.isDebugAttributeEnabled)
         native.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
     }
     finally {
-      WebRtti.current = outer
+      WebElementRtti.current = outer
     }
   }
 
   mount(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
-    const parent = owner.mounted?.instance?.native as HTMLElement ?? WebRtti.current // TODO: To get rid of this workaround
-    const native = document.createElement(e.rtti.name) as E // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const parent = owner.mounted?.instance?.native as Element ?? WebElementRtti.current // TODO: To get rid of this workaround
+    const native = this.createElement(e) // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     native.id = e.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
     if (!owner.rtti.sorting) {
       if (sibling !== undefined) {
         const prev = sibling.mounted?.instance?.native
-        if (prev instanceof HTMLElement)
+        if (prev instanceof Element)
           parent.insertBefore(native, prev.nextSibling)
       }
       else
@@ -61,11 +61,13 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
     e.mounted!.instance!.native = native
   }
 
+  protected abstract createElement(e: Emitted<E, any, any>): E
+
   reorder(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
-    const parent = owner.mounted?.instance?.native as HTMLElement ?? WebRtti.current // TODO: To get rid of this workaround
+    const parent = owner.mounted?.instance?.native as Element ?? WebElementRtti.current // TODO: To get rid of this workaround
     const prev = sibling?.mounted?.instance?.native
     const native = e.mounted?.instance?.native
-    if (native && prev instanceof HTMLElement && prev.nextSibling !== native) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (native && prev instanceof Element && prev.nextSibling !== native) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.insertBefore(${(prev.nextSibling! as any)?.id})`)
       parent.insertBefore(native, prev.nextSibling)
     }
@@ -73,14 +75,14 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
 
   unmount(e: Emitted<E, any, any>, owner: Emitted, cause: Emitted): void {
     const native = e.mounted?.instance?.native
-    if (!WebRtti.unmounting && native && native.parentElement) {
-      WebRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!WebElementRtti.unmounting && native && native.parentElement) {
+      WebElementRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       try { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${e.parentElement.id}.removeChild(${e.id} r${ref.mounted!.cycle})`)
         native.remove()
         unmount(e, owner, cause) // proceed
       }
       finally {
-        WebRtti.unmounting = undefined
+        WebElementRtti.unmounting = undefined
       }
     }
     else { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}???.unmount(${ref.id} r${ref.mounted!.cycle})`)
@@ -88,14 +90,26 @@ export class WebRtti<E extends HTMLElement> implements Rtti<E, any, any> {
     }
   }
 
-  static current: HTMLElement = document.body
-  static unmounting?: HTMLElement = undefined
+  static current: Element = document.body
+  static unmounting?: Element = undefined
   static blinkingEffect: string | undefined = undefined
 }
 
-function blink(e: HTMLElement, cycle: number): void {
+function blink(e: Element, cycle: number): void {
   const n1 = cycle % 2 + 1
   const n2 = n1 % 2 + 1
-  e.classList.toggle(`${WebRtti.blinkingEffect}-${n1}`, true)
-  e.classList.toggle(`${WebRtti.blinkingEffect}-${n2}`, false)
+  e.classList.toggle(`${WebElementRtti.blinkingEffect}-${n1}`, true)
+  e.classList.toggle(`${WebElementRtti.blinkingEffect}-${n2}`, false)
+}
+
+export class WebRtti<E extends HTMLElement> extends WebElementRtti<E> {
+  protected createElement(e: Emitted<E, any, any>): E {
+    return document.createElement(e.rtti.name) as E
+  }
+}
+
+export class WebSvgRtti<E extends SVGElement> extends WebElementRtti<E> {
+  protected createElement(e: Emitted<E, any, any>): E {
+    return document.createElementNS('http://www.w3.org/2000/svg', e.rtti.name) as E
+  }
 }
