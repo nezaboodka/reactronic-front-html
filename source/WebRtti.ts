@@ -9,16 +9,16 @@ import { Reactronic } from 'reactronic'
 import { render, unmount, Emitted, Rtti } from 'reactronic-front'
 
 export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...args: any[]): T {
-  const outer = WebElementRtti.current
+  const outer = WebRtti.current
   try {
     return func(...args)
   }
   finally {
-    WebElementRtti.current = outer
+    WebRtti.current = outer
   }
 }
 
-abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
+abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
   static isDebugAttributeEnabled: boolean = false
 
   constructor(
@@ -27,23 +27,23 @@ abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
   }
 
   render(e: Emitted<E, any, any>): void {
-    const outer = WebElementRtti.current
+    const outer = WebRtti.current
     try { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const mounted = e.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const native = mounted.instance!.native!
-      WebElementRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
+      WebRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
       render(e) // proceed
-      WebElementRtti.blinkingEffect && blink(native, mounted.cycle)
-      if (WebElementRtti.isDebugAttributeEnabled)
+      WebRtti.blinkingEffect && blink(native, mounted.cycle)
+      if (WebRtti.isDebugAttributeEnabled)
         native.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
     }
     finally {
-      WebElementRtti.current = outer
+      WebRtti.current = outer
     }
   }
 
   mount(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
-    const parent = owner.mounted?.instance?.native as Element ?? WebElementRtti.current // TODO: To get rid of this workaround
+    const parent = owner.mounted?.instance?.native as Element ?? WebRtti.current // TODO: To get rid of this workaround
     const native = this.createElement(e) // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     native.id = e.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
     if (!owner.rtti.sorting) {
@@ -64,7 +64,7 @@ abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
   protected abstract createElement(e: Emitted<E, any, any>): E
 
   reorder(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
-    const parent = owner.mounted?.instance?.native as Element ?? WebElementRtti.current // TODO: To get rid of this workaround
+    const parent = owner.mounted?.instance?.native as Element ?? WebRtti.current // TODO: To get rid of this workaround
     const prev = sibling?.mounted?.instance?.native
     const native = e.mounted?.instance?.native
     if (native && prev instanceof Element && prev.nextSibling !== native) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -75,14 +75,14 @@ abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
 
   unmount(e: Emitted<E, any, any>, owner: Emitted, cause: Emitted): void {
     const native = e.mounted?.instance?.native
-    if (!WebElementRtti.unmounting && native && native.parentElement) {
-      WebElementRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!WebRtti.unmounting && native && native.parentElement) {
+      WebRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       try { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${e.parentElement.id}.removeChild(${e.id} r${ref.mounted!.cycle})`)
         native.remove()
         unmount(e, owner, cause) // proceed
       }
       finally {
-        WebElementRtti.unmounting = undefined
+        WebRtti.unmounting = undefined
       }
     }
     else { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}???.unmount(${ref.id} r${ref.mounted!.cycle})`)
@@ -98,17 +98,17 @@ abstract class WebElementRtti<E extends Element> implements Rtti<E, any, any> {
 function blink(e: Element, cycle: number): void {
   const n1 = cycle % 2 + 1
   const n2 = n1 % 2 + 1
-  e.classList.toggle(`${WebElementRtti.blinkingEffect}-${n1}`, true)
-  e.classList.toggle(`${WebElementRtti.blinkingEffect}-${n2}`, false)
+  e.classList.toggle(`${WebRtti.blinkingEffect}-${n1}`, true)
+  e.classList.toggle(`${WebRtti.blinkingEffect}-${n2}`, false)
 }
 
-export class WebRtti<E extends HTMLElement> extends WebElementRtti<E> {
+export class HtmlRtti<E extends HTMLElement> extends WebRtti<E> {
   protected createElement(e: Emitted<E, any, any>): E {
     return document.createElement(e.rtti.name) as E
   }
 }
 
-export class WebSvgRtti<E extends SVGElement> extends WebElementRtti<E> {
+export class SvgRtti<E extends SVGElement> extends WebRtti<E> {
   protected createElement(e: Emitted<E, any, any>): E {
     return document.createElementNS('http://www.w3.org/2000/svg', e.rtti.name) as E
   }
