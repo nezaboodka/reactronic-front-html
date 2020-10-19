@@ -2,6 +2,8 @@
 // shall be included in all copies or substantial portions.
 // Copyright (C) 2019-2020 Yury Chetyrko <ychetyrko@gmail.com>
 // MIT License: https://raw.githubusercontent.com/nezaboodka/reactronic-front-web/master/LICENSE
+// By contributing, you agree that your contributions will be
+// automatically licensed under the license referred above.
 
 import { Reactronic } from 'reactronic'
 import { render, unmount, Emitted, Rtti } from 'reactronic-front'
