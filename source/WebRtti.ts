@@ -18,7 +18,7 @@ export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...a
   }
 }
 
-abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
+export abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
   static isDebugAttributeEnabled: boolean = false
 
   constructor(
