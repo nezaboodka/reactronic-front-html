@@ -6,7 +6,7 @@
 // automatically licensed under the license referred above.
 
 import { Reactronic } from 'reactronic'
-import { render, unmount, Emitted, Rtti } from 'reactronic-front'
+import { render, unmount, Manifest, Rtti } from 'reactronic-front'
 
 export function usingParent<T>(e: HTMLElement, func: (...args: any[]) => T, ...args: any[]): T {
   const outer = WebRtti.current
@@ -26,13 +26,13 @@ export abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
     readonly sorting: boolean = false) {
   }
 
-  render(e: Emitted<E, any, any>): void {
+  render(m: Manifest<E, any, any>): void {
     const outer = WebRtti.current
     try { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const mounted = e.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const mounted = m.mounted! // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const native = mounted.instance!.native!
       WebRtti.current = native // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}render(${e.id} r${ref.mounted!.cycle})`)
-      render(e) // proceed
+      render(m) // proceed
       WebRtti.blinkingEffect && blink(native, mounted.cycle)
       if (WebRtti.isDebugAttributeEnabled)
         native.setAttribute('rdbg', `${mounted.cycle}:    ${Reactronic.why()}`)
@@ -42,10 +42,10 @@ export abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
     }
   }
 
-  mount(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
+  mount(m: Manifest<E, any, any>, owner: Manifest, sibling?: Manifest): void {
     const parent = owner.mounted?.instance?.native as Element ?? WebRtti.current // TODO: To get rid of this workaround
-    const native = this.createElement(e) // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    native.id = e.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
+    const native = this.createElement(m) // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    native.id = m.id // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.appendChild(${e.id} r${ref.mounted!.cycle})`)
     if (!owner.rtti.sorting) {
       if (sibling !== undefined) {
         const prev = sibling.mounted?.instance?.native
@@ -58,35 +58,35 @@ export abstract class WebRtti<E extends Element> implements Rtti<E, any, any> {
     else
       parent.appendChild(native)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    e.mounted!.instance!.native = native
+    m.mounted!.instance!.native = native
   }
 
-  protected abstract createElement(e: Emitted<E, any, any>): E
+  protected abstract createElement(m: Manifest<E, any, any>): E
 
-  reorder(e: Emitted<E, any, any>, owner: Emitted, sibling?: Emitted): void {
+  reorder(m: Manifest<E, any, any>, owner: Manifest, sibling?: Manifest): void {
     const parent = owner.mounted?.instance?.native as Element ?? WebRtti.current // TODO: To get rid of this workaround
     const prev = sibling?.mounted?.instance?.native
-    const native = e.mounted?.instance?.native
+    const native = m.mounted?.instance?.native
     if (native && prev instanceof Element && prev.nextSibling !== native) { // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${parent.id}.insertBefore(${(prev.nextSibling! as any)?.id})`)
       parent.insertBefore(native, prev.nextSibling)
     }
   }
 
-  unmount(e: Emitted<E, any, any>, owner: Emitted, cause: Emitted): void {
-    const native = e.mounted?.instance?.native
+  unmount(m: Manifest<E, any, any>, owner: Manifest, cause: Manifest): void {
+    const native = m.mounted?.instance?.native
     if (!WebRtti.unmounting && native && native.parentElement) {
       WebRtti.unmounting = native // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       try { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}${e.parentElement.id}.removeChild(${e.id} r${ref.mounted!.cycle})`)
         native.remove()
-        unmount(e, owner, cause) // proceed
+        unmount(m, owner, cause) // proceed
       }
       finally {
         WebRtti.unmounting = undefined
       }
     }
     else { // console.log(`${'  '.repeat(Math.abs(ref.mounted!.level))}???.unmount(${ref.id} r${ref.mounted!.cycle})`)
-      unmount(e, owner, cause) // proceed
+      unmount(m, owner, cause) // proceed
     }
   }
 
@@ -103,13 +103,13 @@ function blink(e: Element, cycle: number): void {
 }
 
 export class HtmlRtti<E extends HTMLElement> extends WebRtti<E> {
-  protected createElement(e: Emitted<E, any, any>): E {
-    return document.createElement(e.rtti.name) as E
+  protected createElement(m: Manifest<E, any, any>): E {
+    return document.createElement(m.rtti.name) as E
   }
 }
 
 export class SvgRtti<E extends SVGElement> extends WebRtti<E> {
-  protected createElement(e: Emitted<E, any, any>): E {
+  protected createElement(e: Manifest<E, any, any>): E {
     return document.createElementNS('http://www.w3.org/2000/svg', e.rtti.name) as E
   }
 }
