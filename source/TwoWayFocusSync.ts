@@ -17,10 +17,10 @@ export function TwoWayFocusSync(
   target.focusBinding = focusToggleRef
   if (setNativeFocus === undefined)
     setNativeFocus = () => target.focus()
-  RxFragment(id, { focusToggleRef }, (e, o, state) => {
-    const v = state.focusToggleRef.deref
-    const v1 = state.focusToggleRef.value1
-    const active = v === state.focusToggleRef.value1 || (
+  RxFragment(id, { focusToggleRef }, (e, o) => {
+    const v = focusToggleRef.deref
+    const v1 = focusToggleRef.value1
+    const active = v === focusToggleRef.value1 || (
       v instanceof Ref && v1 instanceof Ref && Ref.sameRefs(v, v1))
     // console.log(`${(entity as any).constructor.name}.${member.toString()} === ${entity[member]} => ${member}:${activeValue}.setFocused(${active}) // ${Reactronic.why()}`)
     active && setNativeFocus && setNativeFocus()
