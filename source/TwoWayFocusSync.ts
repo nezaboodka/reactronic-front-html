@@ -5,13 +5,13 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { Field, BoolField } from 'reactronic'
+import { Field, FieldToggle } from 'reactronic'
 import { RxFragment } from 'reactronic-front'
 
 export function TwoWayFocusSync(
   id: string,
   target: HTMLElement,
-  fFocusToggle: BoolField<any>,
+  fFocusToggle: FieldToggle<any>,
   setNativeFocus?: (() => void)
 ): void {
   target.focusBinding = fFocusToggle
