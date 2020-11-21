@@ -5,23 +5,23 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { BoolRef, Ref } from 'reactronic'
+import { Field, BoolField } from 'reactronic'
 import { RxFragment } from 'reactronic-front'
 
 export function TwoWayFocusSync(
   id: string,
   target: HTMLElement,
-  focusToggleRef: BoolRef<any>,
+  fFocusToggle: BoolField<any>,
   setNativeFocus?: (() => void)
 ): void {
-  target.focusBinding = focusToggleRef
+  target.focusBinding = fFocusToggle
   if (setNativeFocus === undefined)
     setNativeFocus = () => target.focus()
-  RxFragment(id, { focusToggleRef }, (e, o) => {
-    const v = focusToggleRef.deref
-    const v1 = focusToggleRef.value1
-    const active = v === focusToggleRef.value1 || (
-      v instanceof Ref && v1 instanceof Ref && Ref.sameRefs(v, v1))
+  RxFragment(id, { fFocusToggle }, (e, o) => {
+    const f = fFocusToggle.value
+    const f1 = fFocusToggle.value1
+    const active = f === fFocusToggle.value1 || (
+      f instanceof Field && f1 instanceof Field && Field.sameFields(f, f1))
     // console.log(`${(entity as any).constructor.name}.${member.toString()} === ${entity[member]} => ${member}:${activeValue}.setFocused(${active}) // ${Reactronic.why()}`)
     active && setNativeFocus && setNativeFocus()
   })

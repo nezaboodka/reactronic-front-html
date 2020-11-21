@@ -2253,22 +2253,17 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-reactronic-front@^0.20.304:
-  version "0.20.304"
-  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.304.tgz#0bc3072741feec0955ffe834bdb75eea05ebfc97"
-  integrity sha512-BTF3NRaS94gmQ030W4M3kGJPZNS5W1y/lDPmJZ4KaXkcPtz9aRXQKFa7Fl2mTaa8TOLKc2qgvdiGGLUkjfsl1w==
+reactronic-front@^0.20.305:
+  version "0.20.305"
+  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.305.tgz#e415326b099ff344cca6e148c22e972a3d348ac1"
+  integrity sha512-5oTwKCXE5kuITPZ19fMOs38s1UbJQJI5yt7JaFDkQI7RMxiBgt4zmUl4xNWVozc9FSV8VFf6mvut/pRnRLoIOQ==
   dependencies:
-    reactronic "^0.20.200"
+    reactronic "^0.20.305"
 
-reactronic@^0.20.200:
-  version "0.20.200"
-  resolved "https://registry.yarnpkg.com/reactronic/-/reactronic-0.20.200.tgz#77efa7c47b706f0e627f46d524d6b73dc91f7359"
-  integrity sha512-z5Zhjj2uZZnNI4110ztZIvKvKpzB9RtOUK+dtdNIvZzzBRP/EeNbwuEj0h6e6WORar/z/mPM2VH9dam6PYQEdg==
-
-reactronic@^0.20.303:
-  version "0.20.303"
-  resolved "https://registry.yarnpkg.com/reactronic/-/reactronic-0.20.303.tgz#bd9c4f475a105ba9399584bd0d08e165b68538e3"
-  integrity sha512-2V6cnMp+CIKaRqL2YvfMwav1G606ZAU4sqppAfHv9yxTzka6a9nUx0DrO+znPdhc51MTQaWaudRIkwYRtgSaIw==
+reactronic@^0.20.305:
+  version "0.20.305"
+  resolved "https://registry.yarnpkg.com/reactronic/-/reactronic-0.20.305.tgz#5546c74da58568419087a49a5349d6ed9de405c7"
+  integrity sha512-HyvxUQSGufQPacB00uTkoOVpELG22x/tNijxR9ZG11Wr5el3I0Ou6S9WWdkHIEoKsDDA476V+QHv8ZgLng0ZJw==
 
 read-pkg@^5.2.0:
   version "5.2.0"
