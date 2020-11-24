@@ -5,41 +5,41 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-export const SYM_BINDING: unique symbol = Symbol('binding')
-export const SYM_FOCUS_BINDING: unique symbol = Symbol('focusBinding')
-export const SYM_HOVER_BINDING: unique symbol = Symbol('hoverBinding')
-// export const SYM_DRAGGING_BINDING: unique symbol = Symbol('draggingBinding')
+export const SYM_EVENT_DATA: unique symbol = Symbol('eventData')
+export const SYM_FOCUS_EVENT_DATA: unique symbol = Symbol('focusEventData')
+export const SYM_HOVER_EVENT_DATA: unique symbol = Symbol('hoverEventData')
+// export const SYM_DRAGGING_EVENT_DATA: unique symbol = Symbol('draggingEventData')
 
 declare global {
 
   interface Element {
-    binding: unknown
-    focusBinding: unknown
-    hoverBinding: unknown
-    // draggingBinding: unknown
+    eventData: unknown
+    focusEventData: unknown
+    hoverEventData: unknown
+    // draggingEventData: unknown
   }
 }
 
-Object.defineProperty(Element.prototype, 'binding', {
+Object.defineProperty(Element.prototype, 'eventData', {
   configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_BINDING] },
-  set(value: unknown) { this[SYM_BINDING] = value },
+  get(): unknown { return this[SYM_EVENT_DATA] },
+  set(value: unknown) { this[SYM_EVENT_DATA] = value },
 })
 
-Object.defineProperty(Element.prototype, 'focusBinding', {
+Object.defineProperty(Element.prototype, 'focusEventData', {
   configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_FOCUS_BINDING] },
-  set(value: unknown) { this[SYM_FOCUS_BINDING] = value },
+  get(): unknown { return this[SYM_FOCUS_EVENT_DATA] },
+  set(value: unknown) { this[SYM_FOCUS_EVENT_DATA] = value },
 })
 
-Object.defineProperty(Element.prototype, 'hoverBinding', {
+Object.defineProperty(Element.prototype, 'hoverEventData', {
   configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_HOVER_BINDING] },
-  set(value: unknown) { this[SYM_HOVER_BINDING] = value },
+  get(): unknown { return this[SYM_HOVER_EVENT_DATA] },
+  set(value: unknown) { this[SYM_HOVER_EVENT_DATA] = value },
 })
 
-// Object.defineProperty(Element.prototype, 'draggingBinding', {
+// Object.defineProperty(Element.prototype, 'draggingEventData', {
 //   configurable: false, enumerable: false,
-//   get(): unknown { return this[SYM_DRAGGING_BINDING] },
-//   set(value: unknown) { this[SYM_DRAGGING_BINDING] = value }
+//   get(): unknown { return this[SYM_DRAGGING_EVENT_DATA] },
+//   set(value: unknown) { this[SYM_DRAGGING_EVENT_DATA] = value }
 // })

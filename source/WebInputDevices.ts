@@ -7,7 +7,7 @@
 
 import { transaction, trace, TraceLevel, stateless } from 'reactronic'
 import * as UI from 'reactronic-front'
-import { SYM_FOCUS_BINDING, SYM_BINDING, SYM_HOVER_BINDING } from './WebApiExt'
+import { SYM_FOCUS_EVENT_DATA, SYM_EVENT_DATA, SYM_HOVER_EVENT_DATA } from './WebApiExt'
 
 export class WebInputDevices extends UI.InputDevices {
   @stateless currentEvent: Event | undefined = undefined
@@ -65,7 +65,7 @@ export class WebInputDevices extends UI.InputDevices {
 
   @transaction @trace(TraceLevel.Suppress)
   resetFocus(): void {
-    this.trackFocus(this.element?.focusBinding ? [this.element.focusBinding] : [], true)
+    this.trackFocus(this.element?.focusEventData ? [this.element.focusEventData] : [], true)
     this.element?.focus()
   }
 
@@ -74,7 +74,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusIn(
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -82,7 +82,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusOut(
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -90,8 +90,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerOver(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
-      UI.grabBindings(path, SYM_HOVER_BINDING, this.context.hover),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      UI.grabEventDataList(path, SYM_HOVER_EVENT_DATA, this.context.hoverEventDataList),
       e.clientX, e.clientY)
   }
 
@@ -100,7 +100,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerMove(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
       e.pointerId, e.clientX, e.clientY)
   }
 
@@ -109,8 +109,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerDown(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -119,8 +119,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerUp(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -129,8 +129,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doDblClick(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.buttons, e.clientX, e.clientY)
   }
 
@@ -139,8 +139,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchStart(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings),
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus))
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -148,7 +148,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchEnd(
-      UI.grabBindings(path, SYM_BINDING, this.pointer.bindings))
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -156,8 +156,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doWheel(
-      UI.grabBindings(path, SYM_BINDING, this.scroll.bindings),
-      UI.grabBindings(path, SYM_FOCUS_BINDING, this.context.focus),
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.scroll.eventDataList),
+      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
@@ -166,7 +166,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyDown(
-      UI.grabBindings(path, SYM_BINDING, this.keyboard.bindings), e.key)
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -174,7 +174,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyUp(
-      UI.grabBindings(path, SYM_BINDING, this.keyboard.bindings), e.key)
+      UI.grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
   }
 
   protected setPointerCapture(pointerId: number): boolean {

@@ -8,6 +8,6 @@
 export * from './WebRtti'
 export * from './WebElements' // div, span, button, img, link, etc.
 export * from './WebInputDevices'
-export * from './WebApiExt' // binding, focusSyncing
+export * from './WebApiExt' // eventDataList, focusSyncing
 export * from './TwoWayFocusSync'
 import './WebApiExt'
