@@ -20,26 +20,30 @@ declare global {
   }
 }
 
-Object.defineProperty(Element.prototype, 'eventData', {
-  configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_EVENT_DATA] },
-  set(value: unknown) { this[SYM_EVENT_DATA] = value },
-})
+const ElementType = global.Element
 
-Object.defineProperty(Element.prototype, 'focusEventData', {
-  configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_FOCUS_EVENT_DATA] },
-  set(value: unknown) { this[SYM_FOCUS_EVENT_DATA] = value },
-})
+if (ElementType) {
+  Object.defineProperty(ElementType.prototype, 'eventData', {
+    configurable: false, enumerable: false,
+    get(): unknown { return this[SYM_EVENT_DATA] },
+    set(value: unknown) { this[SYM_EVENT_DATA] = value },
+  })
 
-Object.defineProperty(Element.prototype, 'hoverEventData', {
-  configurable: false, enumerable: false,
-  get(): unknown { return this[SYM_HOVER_EVENT_DATA] },
-  set(value: unknown) { this[SYM_HOVER_EVENT_DATA] = value },
-})
+  Object.defineProperty(ElementType.prototype, 'focusEventData', {
+    configurable: false, enumerable: false,
+    get(): unknown { return this[SYM_FOCUS_EVENT_DATA] },
+    set(value: unknown) { this[SYM_FOCUS_EVENT_DATA] = value },
+  })
 
-// Object.defineProperty(Element.prototype, 'draggingEventData', {
-//   configurable: false, enumerable: false,
-//   get(): unknown { return this[SYM_DRAGGING_EVENT_DATA] },
-//   set(value: unknown) { this[SYM_DRAGGING_EVENT_DATA] = value }
-// })
+  Object.defineProperty(ElementType.prototype, 'hoverEventData', {
+    configurable: false, enumerable: false,
+    get(): unknown { return this[SYM_HOVER_EVENT_DATA] },
+    set(value: unknown) { this[SYM_HOVER_EVENT_DATA] = value },
+  })
+
+  // Object.defineProperty(ElementType.prototype, 'draggingEventData', {
+  //   configurable: false, enumerable: false,
+  //   get(): unknown { return this[SYM_DRAGGING_EVENT_DATA] },
+  //   set(value: unknown) { this[SYM_DRAGGING_EVENT_DATA] = value }
+  // })
+}
