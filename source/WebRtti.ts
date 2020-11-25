@@ -90,7 +90,7 @@ export abstract class WebRtti<E extends Element> implements Rtti<E, any> {
     }
   }
 
-  static current: Element = document.body
+  static current: Element = document?.body
   static unmounting?: Element = undefined
   static blinkingEffect: string | undefined = undefined
 }
