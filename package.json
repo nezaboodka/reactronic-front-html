@@ -1,6 +1,6 @@
 {
   "name": "reactronic-front-web",
-  "version": "0.20.312",
+  "version": "0.20.313",
   "description": "Reactronic Front for Web - Transactionally Reactive Frontend Development Framework for Web",
   "main": "build/dist/source/api.js",
   "types": "build/dist/source/api.d.ts",
