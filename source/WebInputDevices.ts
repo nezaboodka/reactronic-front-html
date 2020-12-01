@@ -5,12 +5,12 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { transaction, trace, TraceLevel, stateless } from 'reactronic'
-import * as UI from 'reactronic-front'
+import { transaction, trace, TraceLevel, unmanaged } from 'reactronic'
+import { InputDevices, grabEventDataList} from 'reactronic-front'
 import { SYM_FOCUS_EVENT_DATA, SYM_EVENT_DATA, SYM_HOVER_EVENT_DATA } from './WebApiExt'
 
-export class WebInputDevices extends UI.InputDevices {
-  @stateless currentEvent: Event | undefined = undefined
+export class WebInputDevices extends InputDevices {
+  @unmanaged currentEvent: Event | undefined = undefined
   element?: HTMLElement | null
 
   constructor() {
@@ -74,7 +74,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusIn(
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -82,7 +82,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusOut(
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -90,8 +90,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerOver(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      UI.grabEventDataList(path, SYM_HOVER_EVENT_DATA, this.context.hoverEventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_HOVER_EVENT_DATA, this.context.hoverEventDataList),
       e.clientX, e.clientY)
   }
 
@@ -100,7 +100,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerMove(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
       e.pointerId, e.clientX, e.clientY)
   }
 
@@ -109,8 +109,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerDown(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -119,8 +119,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerUp(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -129,8 +129,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doDblClick(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.buttons, e.clientX, e.clientY)
   }
 
@@ -139,8 +139,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchStart(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -148,7 +148,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchEnd(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList))
+      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList))
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -156,8 +156,8 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doWheel(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.scroll.eventDataList),
-      UI.grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataList(path, SYM_EVENT_DATA, this.scroll.eventDataList),
+      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
@@ -166,7 +166,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyDown(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
+      grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
   }
 
   @transaction @trace(TraceLevel.Suppress)
@@ -174,7 +174,7 @@ export class WebInputDevices extends UI.InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyUp(
-      UI.grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
+      grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
   }
 
   protected setPointerCapture(pointerId: number): boolean {
