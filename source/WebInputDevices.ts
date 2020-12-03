@@ -5,7 +5,7 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { transaction, trace, TraceLevel, unobservable } from 'reactronic'
+import { transactional, trace, TraceLevel, unobservable } from 'reactronic'
 import { InputDevices, grabEventDataList} from 'reactronic-front'
 import { SYM_FOCUS_EVENT_DATA, SYM_EVENT_DATA, SYM_HOVER_EVENT_DATA } from './WebApiExt'
 
@@ -28,7 +28,7 @@ export class WebInputDevices extends InputDevices {
       this.currentEvent.stopPropagation()
   }
 
-  @transaction
+  @transactional
   listen(element: HTMLElement | undefined, enabled: boolean = true): void {
     const existing = this.element
     if (element !== existing) {
@@ -63,13 +63,13 @@ export class WebInputDevices extends InputDevices {
     }
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   resetFocus(): void {
     this.trackFocus(this.element?.focusEventData ? [this.element.focusEventData] : [], true)
     this.element?.focus()
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onFocusIn(e: FocusEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -77,7 +77,7 @@ export class WebInputDevices extends InputDevices {
       grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onFocusOut(e: FocusEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -85,7 +85,7 @@ export class WebInputDevices extends InputDevices {
       grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onPointerOver(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -95,7 +95,7 @@ export class WebInputDevices extends InputDevices {
       e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onPointerMove(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -104,7 +104,7 @@ export class WebInputDevices extends InputDevices {
       e.pointerId, e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onPointerDown(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -114,7 +114,7 @@ export class WebInputDevices extends InputDevices {
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onPointerUp(e: PointerEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -124,7 +124,7 @@ export class WebInputDevices extends InputDevices {
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onDblClick(e: MouseEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -134,7 +134,7 @@ export class WebInputDevices extends InputDevices {
       e.buttons, e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onTouchStart(e: Event): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -143,7 +143,7 @@ export class WebInputDevices extends InputDevices {
       grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onTouchEnd(e: Event): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -151,7 +151,7 @@ export class WebInputDevices extends InputDevices {
       grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList))
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onWheel(e: WheelEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -161,7 +161,7 @@ export class WebInputDevices extends InputDevices {
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onKeyDown(e: KeyboardEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
@@ -169,7 +169,7 @@ export class WebInputDevices extends InputDevices {
       grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
   }
 
-  @transaction @trace(TraceLevel.Suppress)
+  @transactional @trace(TraceLevel.Suppress)
   onKeyUp(e: KeyboardEvent): void {
     const path = e.composedPath()
     this.currentEvent = e
