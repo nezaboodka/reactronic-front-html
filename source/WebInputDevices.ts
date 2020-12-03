@@ -5,12 +5,12 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { transaction, trace, TraceLevel, unmanaged } from 'reactronic'
+import { transaction, trace, TraceLevel, unobservable } from 'reactronic'
 import { InputDevices, grabEventDataList} from 'reactronic-front'
 import { SYM_FOCUS_EVENT_DATA, SYM_EVENT_DATA, SYM_HOVER_EVENT_DATA } from './WebApiExt'
 
 export class WebInputDevices extends InputDevices {
-  @unmanaged currentEvent: Event | undefined = undefined
+  @unobservable currentEvent: Event | undefined = undefined
   element?: HTMLElement | null
 
   constructor() {
