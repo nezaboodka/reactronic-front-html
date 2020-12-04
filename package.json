@@ -32,7 +32,7 @@
   "homepage": "https://github.com/nezaboodka/reactronic-front-web/blob/master/README.md#readme",
   "dependencies": {
     "reactronic": "^0.20.601",
-    "reactronic-front": "^0.20.603"
+    "reactronic-front": "^0.20.604"
   },
   "devDependencies": {
     "@types/node": "14.11.2",

@@ -6,8 +6,8 @@
 // automatically licensed under the license referred above.
 
 import { transactional, trace, TraceLevel, unobservable } from 'reactronic'
-import { Sensors, EventData, EventDataPayload, EventDataPrimacy } from 'reactronic-front'
-import { SYM_EVENT_DATA } from './WebApiExt'
+import { Sensors, grabEventInfos } from 'reactronic-front'
+import { SymEventInfo } from './WebApiExt'
 
 export class WebSensors extends Sensors {
   @unobservable currentEvent: Event | undefined = undefined
@@ -65,8 +65,8 @@ export class WebSensors extends Sensors {
 
   @transactional @trace(TraceLevel.Suppress)
   resetFocus(): void {
-    const eventData = this.element?.eventData?.focus
-    this.trackFocus(eventData ? [eventData] : [], true)
+    const ei = this.element?.eventInfo?.focus
+    this.trackFocus(ei ? [ei] : [], true)
     this.element?.focus()
   }
 
@@ -75,7 +75,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusIn(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix))
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -83,7 +83,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusOut(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix))
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -91,8 +91,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerOver(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'hover', 'hoverPrimacy', this.hover.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'hover', 'hoverImportance', this.hover.eventInfos),
       e.clientX, e.clientY)
   }
 
@@ -101,7 +101,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerMove(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
       e.pointerId, e.clientX, e.clientY)
   }
 
@@ -110,8 +110,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerDown(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -120,8 +120,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerUp(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -130,8 +130,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doDblClick(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos),
       e.buttons, e.clientX, e.clientY)
   }
 
@@ -140,8 +140,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchStart(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix))
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -149,7 +149,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchEnd(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'pointer', 'pointerPrimacy', this.pointer.eventDataMix))
+      grabEventInfos(path, SymEventInfo, 'pointer', 'pointerImportance', this.pointer.eventInfos))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -157,8 +157,8 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doWheel(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'scroll', 'scrollPrimacy', this.scroll.eventDataMix),
-      grabEventDataMix(path, SYM_EVENT_DATA, 'focus', 'focusPrimacy', this.focus.eventDataMix),
+      grabEventInfos(path, SymEventInfo, 'scroll', 'scrollImportance', this.scroll.eventInfos),
+      grabEventInfos(path, SymEventInfo, 'focus', 'focusImportance', this.focus.eventInfos),
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
@@ -167,7 +167,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyDown(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'keyboard', 'keyboardPrimacy', this.keyboard.eventDataMix), e.key)
+      grabEventInfos(path, SymEventInfo, 'keyboard', 'keyboardImportance', this.keyboard.eventInfos), e.key)
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -175,7 +175,7 @@ export class WebSensors extends Sensors {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyUp(
-      grabEventDataMix(path, SYM_EVENT_DATA, 'keyboard', 'keyboardPrimacy', this.keyboard.eventDataMix), e.key)
+      grabEventInfos(path, SymEventInfo, 'keyboard', 'keyboardImportance', this.keyboard.eventInfos), e.key)
   }
 
   protected setPointerCapture(pointerId: number): boolean {
@@ -187,30 +187,4 @@ export class WebSensors extends Sensors {
     this.element?.releasePointerCapture(pointerId)
     return false
   }
-}
-
-export function grabEventDataMix<T = unknown>(path: any[], sym: symbol,
-  dataKey: keyof EventDataPayload, primacyKey: keyof EventDataPrimacy,
-  existing: Array<T>): T[] {
-  let result = existing
-  let i = 0
-  let j = 0
-  while (i < path.length) {
-    const item = path[i][sym] as EventData | undefined
-    if (item !== undefined) {
-      const d = item[dataKey] as T | undefined
-      if (d !== undefined) {
-        if (result !== existing)
-          result.push(d)
-        else if (d !== existing[j])
-          result = existing.slice(0, j), result.push(d)
-        else
-          j++
-      }
-    }
-    i++
-  }
-  if (j === 0 && result === existing && existing.length > 0)
-    result = []
-  return result
 }

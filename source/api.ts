@@ -6,8 +6,8 @@
 // automatically licensed under the license referred above.
 
 export * from './WebRtti'
-export * from './WebElements' // div, span, button, img, link, etc.
+export * from './WebElements'
 export * from './WebSensors'
-export * from './WebApiExt' // eventDataList, focusSyncing
+export * from './WebApiExt'
 export * from './TwoWayFocusSync'
 import './WebApiExt'

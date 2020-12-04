@@ -5,22 +5,22 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { EventData } from 'reactronic-front'
+import { EventInfo } from 'reactronic-front'
 
-export const SYM_EVENT_DATA: unique symbol = Symbol('eventData')
+export const SymEventInfo: unique symbol = Symbol('EventInfo')
 
 declare global {
   interface Element {
-    eventData?: EventData
+    eventInfo?: EventInfo
   }
 }
 
 const ElementType = global.Element
 
-if (ElementType) {
-  Object.defineProperty(ElementType.prototype, 'eventData', {
+if (ElementType !== undefined) {
+  Object.defineProperty(ElementType.prototype, 'eventInfo', {
     configurable: false, enumerable: false,
-    get(): unknown { return this[SYM_EVENT_DATA] },
-    set(value: unknown) { this[SYM_EVENT_DATA] = value },
+    get(): unknown { return this[SymEventInfo] },
+    set(value: unknown) { this[SymEventInfo] = value },
   })
 }

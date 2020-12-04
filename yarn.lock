@@ -2253,10 +2253,10 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-reactronic-front@^0.20.603:
-  version "0.20.603"
-  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.603.tgz#913526d11aab7f53203f6b1f57a7cfff437b44b5"
-  integrity sha512-ZfypEOigHSmKegwLZvL3L6kvPVJa/OFE512HQCmOPehk+BNLaxCj59mK1JrAPy5C7w5KcQrAFzcCmP6bhsznSw==
+reactronic-front@^0.20.604:
+  version "0.20.604"
+  resolved "https://registry.yarnpkg.com/reactronic-front/-/reactronic-front-0.20.604.tgz#25a3c82ca8a09e79a4055600c6adee950f509f01"
+  integrity sha512-iKUsWjuTaeCR4aJDmfZ4I+MNDtpBgls/slboerhMs31nrhZ7WoLZJ/0cTq61Cz0fsbrCSzFOTFDad7aW75pqrQ==
   dependencies:
     reactronic "^0.20.601"
 
