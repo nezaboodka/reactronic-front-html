@@ -5,7 +5,7 @@
 // By contributing, you agree that your contributions will be
 // automatically licensed under the license referred above.
 
-import { EventData } from './EventData'
+import { EventData } from 'reactronic-front'
 
 export const SYM_EVENT_DATA: unique symbol = Symbol('eventData')
 
