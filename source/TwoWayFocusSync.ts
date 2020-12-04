@@ -14,7 +14,10 @@ export function TwoWayFocusSync(
   fFocusToggle: FieldToggle<any>,
   setNativeFocus?: (() => void)
 ): void {
-  target.focusEventData = fFocusToggle
+  let eventData = target.eventData
+  if (!eventData)
+    eventData = target.eventData = {}
+  eventData.focusData = fFocusToggle
   if (setNativeFocus === undefined)
     setNativeFocus = () => target.focus()
   RxFragment(id, { fFocusToggle }, (e, o) => {

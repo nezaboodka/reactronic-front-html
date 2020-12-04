@@ -6,10 +6,11 @@
 // automatically licensed under the license referred above.
 
 import { transactional, trace, TraceLevel, unobservable } from 'reactronic'
-import { InputDevices, grabEventDataList} from 'reactronic-front'
-import { SYM_FOCUS_EVENT_DATA, SYM_EVENT_DATA, SYM_HOVER_EVENT_DATA } from './WebApiExt'
+import { Sensors } from 'reactronic-front'
+import { SYM_EVENT_DATA } from './WebApiExt'
+import { EventData, EventDataPayload, EventDataPrimacy } from './EventData'
 
-export class WebInputDevices extends InputDevices {
+export class WebSensors extends Sensors {
   @unobservable currentEvent: Event | undefined = undefined
   element?: HTMLElement | null
 
@@ -65,7 +66,8 @@ export class WebInputDevices extends InputDevices {
 
   @transactional @trace(TraceLevel.Suppress)
   resetFocus(): void {
-    this.trackFocus(this.element?.focusEventData ? [this.element.focusEventData] : [], true)
+    const eventData = this.element?.eventData?.focusData
+    this.trackFocus(eventData ? [eventData] : [], true)
     this.element?.focus()
   }
 
@@ -74,7 +76,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusIn(
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -82,7 +84,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doFocusOut(
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -90,8 +92,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerOver(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      grabEventDataList(path, SYM_HOVER_EVENT_DATA, this.context.hoverEventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'hoverData', 'hoverPrimacy', this.hover.eventDataMix),
       e.clientX, e.clientY)
   }
 
@@ -100,7 +102,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerMove(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
       e.pointerId, e.clientX, e.clientY)
   }
 
@@ -109,8 +111,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerDown(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -119,8 +121,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doPointerUp(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix),
       e.pointerId, e.buttons, e.clientX, e.clientY)
   }
 
@@ -129,8 +131,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doDblClick(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix),
       e.buttons, e.clientX, e.clientY)
   }
 
@@ -139,8 +141,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchStart(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList),
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList))
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -148,7 +150,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doTouchEnd(
-      grabEventDataList(path, SYM_EVENT_DATA, this.pointer.eventDataList))
+      grabEventDataMix(path, SYM_EVENT_DATA, 'pointerData', 'pointerPrimacy', this.pointer.eventDataMix))
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -156,8 +158,8 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doWheel(
-      grabEventDataList(path, SYM_EVENT_DATA, this.scroll.eventDataList),
-      grabEventDataList(path, SYM_FOCUS_EVENT_DATA, this.context.focusEventDataList),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'scrollData', 'scrollPrimacy', this.scroll.eventDataMix),
+      grabEventDataMix(path, SYM_EVENT_DATA, 'focusData', 'focusPrimacy', this.focus.eventDataMix),
       e.deltaX, e.deltaY, e.clientX, e.clientY)
   }
 
@@ -166,7 +168,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyDown(
-      grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
+      grabEventDataMix(path, SYM_EVENT_DATA, 'keyboardData', 'keyboardPrimacy', this.keyboard.eventDataMix), e.key)
   }
 
   @transactional @trace(TraceLevel.Suppress)
@@ -174,7 +176,7 @@ export class WebInputDevices extends InputDevices {
     const path = e.composedPath()
     this.currentEvent = e
     this.doKeyUp(
-      grabEventDataList(path, SYM_EVENT_DATA, this.keyboard.eventDataList), e.key)
+      grabEventDataMix(path, SYM_EVENT_DATA, 'keyboardData', 'keyboardPrimacy', this.keyboard.eventDataMix), e.key)
   }
 
   protected setPointerCapture(pointerId: number): boolean {
@@ -186,4 +188,30 @@ export class WebInputDevices extends InputDevices {
     this.element?.releasePointerCapture(pointerId)
     return false
   }
+}
+
+export function grabEventDataMix<T = unknown>(path: any[], sym: symbol,
+  dataKey: keyof EventDataPayload, primacyKey: keyof EventDataPrimacy,
+  existing: Array<T>): T[] {
+  let result = existing
+  let i = 0
+  let j = 0
+  while (i < path.length) {
+    const item = path[i][sym] as EventData | undefined
+    if (item !== undefined) {
+      const d = item[dataKey] as T | undefined
+      if (d !== undefined) {
+        if (result !== existing)
+          result.push(d)
+        else if (d !== existing[j])
+          result = existing.slice(0, j), result.push(d)
+        else
+          j++
+      }
+    }
+    i++
+  }
+  if (j === 0 && result === existing && existing.length > 0)
+    result = []
+  return result
 }
